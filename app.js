@@ -5,6 +5,7 @@ const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const path = require('path');
+const userRoute=require('./routes/useRoutes')
 const App = express();
 
 App.use(
@@ -23,6 +24,7 @@ App.use(morgan('dev'));
 App.use(express.json());
 App.use(cookieParser());
 App.use(express.static(`${__dirname}/public`));
+App.use('/api/v1/user',userRoute)
 
 App.get('/', (req, res) => {
     res.send('Hello, Node.js with dotenv!');
