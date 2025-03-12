@@ -9,18 +9,23 @@ const userSchema = new mongoose.Schema(
       required: [true, 'A user must have a name'],
       trim: true,
     },
+
     email: {
       type: String,
       required: [true, 'A user must have an email'],
       unique: true,
       lowercase: true,
+      
       validate: {
         validator: function (value) {
           return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value);
         },
         message: 'Please provide a valid email',
       },
+
+
     },
+
     phoneNumber: {
       type: String,
       required: [true, 'A user must have a phone number'],
@@ -32,41 +37,50 @@ const userSchema = new mongoose.Schema(
         message: 'Please provide a valid phone number',
       },
     },
+
     uid: {
       type: String,
       required: [true, 'A user must have a UID'],
       minlength: 6,
       select: false, // Hide UID from queries
     },
+
+    role:{
+        type:String,
+        enum: ['admin', 'student', 'teacher']
+    },
+
     avatar: {
       type: String,
       default: 'default-avatar.png',
     },
     departement:{
-    
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Department', // Assuming Departemnt is another model
  
     },
-   registeredCourses: [
-    {
-        type: String,
-        validate: {
-        validator: function (value) {
-            return new Set(value).size === value.length; // Ensure all values are unique
-        },
-        message: 'Duplicate course IDs are not allowed',
-        },
+ registeredCourses: {
+  type: [String], // Array of strings (course IDs)
+  validate: {
+    validator: function (value) {
+      return new Set(value).size === value.length; // Ensure all values are unique
     },
-   ],
+    message: 'Duplicate course IDs are not allowed',
+  },},
 
-    batch: {
+
+batch: {
       batchNumber: { type: Number, required: true },
       year: { type: Number, required: true },
     },
+graduationYear:{
+    type:Number,
+    required:true
+},
   },
   { timestamps: true } // Automatically adds `createdAt` & `updatedAt`
 );
+
 
 // Hash `uid` before saving (if it's a password)
 userSchema.pre('save', async function (next) {

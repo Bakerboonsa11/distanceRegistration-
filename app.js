@@ -1,11 +1,13 @@
 
 require('dotenv').config(); // Load environment variables
+
 const cors = require('cors');
 const express = require('express');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const path = require('path');
-const userRoute=require('./routes/useRoutes')
+const userRoute=require('./routes/useRoutes');
+const errorController = require('./controllers/errorController');
 const App = express();
 
 App.use(
@@ -29,7 +31,7 @@ App.use('/api/v1/user',userRoute)
 App.get('/', (req, res) => {
     res.send('Hello, Node.js with dotenv!');
 });
-
+App.use(errorController)
 
 module.exports=App;
 // 
