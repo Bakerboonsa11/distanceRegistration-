@@ -1,6 +1,14 @@
 const express=require('express')
 const userController=require('../controllers/userController')
+const authencicationController=require("../controllers/authenticationController")
 const Router=express.Router()
+
+// AUTHENTICATION
+
+Router.route('/signIn')
+.post(authencicationController.signIn)
+// Router.route('/:id/me')
+// .post(userController.updateMe)
 
 Router.route('/')
 .get(userController.getAll)

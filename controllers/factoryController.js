@@ -1,6 +1,8 @@
 const catchAsync=require('../utils/catchAsync');
 const appError=require('../utils/appError');
 const appFeatures= require("../utils/appFeuture")
+const User=require("../models/userModel")
+const createToken=require('../utils/token')
 console.log("catchasync is", catchAsync())
 
 exports.createOne=(Model)=>catchAsync(
@@ -9,14 +11,10 @@ exports.createOne=(Model)=>catchAsync(
 
     console.log(req.body);
     const createdInstance = await Model.create(req.body);
-
-    if (createdInstance) {
-      return res.status(201).json({
-        status: "success",
-        message: " data is created successfully",
-        data:createdInstance
-      });
-    }
+  if(createdInstance && Model===User){
+     createToken(createdInstance,res);
+  }
+   
   
     
 }

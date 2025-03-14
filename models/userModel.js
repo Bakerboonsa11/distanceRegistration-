@@ -4,12 +4,17 @@ const bcrypt = require('bcrypt'); // For hashing passwords
 // Define the User schema
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    firstName: {
       type: String,
-      required: [true, 'A user must have a name'],
+      required: [true, 'A user must have a firstName'],
       trim: true,
     },
-
+    LastName:{
+       type: String,
+      required: [true, 'A user must have a lastName'],
+      trim: true,
+    }
+   ,
     email: {
       type: String,
       required: [true, 'A user must have an email'],
@@ -88,7 +93,9 @@ userSchema.pre('save', async function (next) {
   this.uid = await bcrypt.hash(this.uid, 12);
   next();
 });
-
+userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
 
 // Middleware to hash the password before saving
 // userSchema.pre('save', async function (next) {
