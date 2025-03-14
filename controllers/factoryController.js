@@ -1,5 +1,6 @@
 const catchAsync=require('../utils/catchAsync');
 const appError=require('../utils/appError');
+const appFeatures= require("../utils/appFeuture")
 console.log("catchasync is", catchAsync())
 
 exports.createOne=(Model)=>catchAsync(
@@ -58,7 +59,7 @@ exports.updateOne=(Model)=>catchAsync((async(req,res,next)=>{
   if(req.params.toUser){
     id=req.params.toUser
   }
-   req.body.images=req.files
+  //  req.body.images=req.files
   //  console.log(req.body)
    const updatedInstance=await Model.findByIdAndUpdate(id,req.body,{new:true,runValidators:true})
  
@@ -82,7 +83,7 @@ exports.getOne = (Model) =>
     }
     console.log(id)
     // Find the document by ID and populate if needed
-    let query = Model.find({createdFor:id});
+    let query = Model.find({_id:id});
     // if (populateOptions) {
     //   console.log('populate option',populateOptions)
     //   query = query.populate(populateOptions);
