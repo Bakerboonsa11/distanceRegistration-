@@ -14,12 +14,12 @@ exports.updateCourse=factoryFn.updateOne(Course)
 exports.getCourse=factoryFn.getOne(Course)
 exports.getAll=factoryFn.getAll(Course)
 exports.getByName=catchAsync(async(req,res,next)=>{
-    const {uid}=req.body;
-    const course= await Course.findOne({uid})
+    const {name}=req.body;
+    const course= await Course.findOne({name})
 
-    console.log(uid,course);
+    console.log(name,course);
     if(!course){
-        return new AppError("there is no course with this uid");
+        return new AppError("there is no course with this name");
     }
 
     res.status(200).json({
@@ -27,3 +27,4 @@ exports.getByName=catchAsync(async(req,res,next)=>{
         course
     })
 })
+
