@@ -1,5 +1,5 @@
 const mongoose=require('mongoose')
-
+const Course=require('../models/courseModel')
 
 const departementSchema = new mongoose.Schema(
   {
@@ -30,7 +30,7 @@ const departementSchema = new mongoose.Schema(
 ,
   year:{
      type:Number,
-     required:[true,"each departement must have a year"]
+     required:[true,"each departement must have a year "]
 
     }
 
@@ -40,6 +40,6 @@ const departementSchema = new mongoose.Schema(
   },
   { timestamps: true } // Automatically adds `createdAt` & `updatedAt`
 );
+const Dep=mongoose.model("Dep",departementSchema)
 
-
-module.exports=departementSchema
+module.exports=Dep

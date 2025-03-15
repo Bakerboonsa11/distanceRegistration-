@@ -1,4 +1,4 @@
-const Dep = require("../models/depModel")
+const Dep = require('../models/depModel')
 const AppError = require("../utils/appError")
 const catchAsync = require("../utils/catchAsync")
 const factoryFn=require('./factoryController')

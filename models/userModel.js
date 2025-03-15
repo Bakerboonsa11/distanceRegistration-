@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt'); // For hashing passwords
-
+const Dep=require('../models/depModel')
 // Define the User schema
+
+
 const userSchema = new mongoose.Schema(
   {
     firstName: {
@@ -9,28 +11,23 @@ const userSchema = new mongoose.Schema(
       required: [true, 'A user must have a firstName'],
       trim: true,
     },
-    LastName:{
-       type: String,
+    LastName: {
+      type: String,
       required: [true, 'A user must have a lastName'],
       trim: true,
-    }
-   ,
+    },
     email: {
       type: String,
       required: [true, 'A user must have an email'],
       unique: true,
       lowercase: true,
-      
       validate: {
         validator: function (value) {
           return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value);
         },
         message: 'Please provide a valid email',
       },
-
-
     },
-
     phoneNumber: {
       type: String,
       required: [true, 'A user must have a phone number'],
@@ -42,46 +39,58 @@ const userSchema = new mongoose.Schema(
         message: 'Please provide a valid phone number',
       },
     },
-
     uid: {
       type: String,
       required: [true, 'A user must have a UID'],
       minlength: 6,
       select: false, // Hide UID from queries
     },
-
-    role:{
-        type:String,
-        enum: ['admin', 'student', 'teacher']
+    role: {
+      type: String,
+      enum: ['admin', 'student', 'teacher'],
+      required: true,
     },
-
     avatar: {
       type: String,
       default: 'default-avatar.png',
     },
-    departement:{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Department', // Assuming Departemnt is another model
- 
+   
+    registeredCourses: {
+      type: [String], // Array of strings (course IDs)
+      validate: {
+        validator: function (value) {
+          return new Set(value).size === value.length; // Ensure all values are unique
+        },
+        message: 'Duplicate course IDs are not allowed',
+      },
     },
- registeredCourses: {
-  type: [String], // Array of strings (course IDs)
-  validate: {
-    validator: function (value) {
-      return new Set(value).size === value.length; // Ensure all values are unique
-    },
-    message: 'Duplicate course IDs are not allowed',
-  },},
-
-
-batch: {
+    batch: {
       batchNumber: { type: Number, required: true },
       year: { type: Number, required: true },
     },
+   assignment: {
+        type: [mongoose.Schema.Types.ObjectId], // Array of ObjectIds
+        ref: 'Dep',
+        validate: {
+          validator: function (value) {
+            if (this.role === 'student') {
+              return value.length <= 1; // Students can only have one department
+            }
+            return true; // Teachers can have multiple departments
+          },
+          message: 'A student can only be assigned to one department.',
+        },
+}
 
+     
+      
+    
   },
   { timestamps: true } // Automatically adds `createdAt` & `updatedAt`
 );
+
+
+
 
 
 // Hash `uid` before saving (if it's a password)
