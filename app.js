@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const path = require('path');
 const userRoute=require('./routes/useRoutes');
+const courseRoute=require('./routes/courseRoute')
 const errorController = require('./controllers/errorController');
 const App = express();
 
@@ -28,6 +29,10 @@ App.use(express.json());
 App.use(cookieParser());
 App.use(express.static(`${__dirname}/public`));
 App.use('/api/v1/user',userRoute)
+App.use('/api/v1/courses',courseRoute)
+// App.use('/api/v1/departemnt',userRoute)
+// App.use('/api/v1/registration',userRoute)
+// App.use('/api/v1/transaction',userRoute)
 // App.post('/', async (req, res) => {
 //     try {
 //         const { message } = req.body;

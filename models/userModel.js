@@ -78,10 +78,7 @@ batch: {
       batchNumber: { type: Number, required: true },
       year: { type: Number, required: true },
     },
-graduationYear:{
-    type:Number,
-    required:true
-},
+
   },
   { timestamps: true } // Automatically adds `createdAt` & `updatedAt`
 );

@@ -6,7 +6,7 @@ const createToken=require('../utils/token')
 console.log("catchasync is", catchAsync())
 
 exports.createOne=(Model)=>catchAsync(
-
+ 
  async (req, res, next) => {
 
     console.log(req.body);
@@ -15,6 +15,13 @@ exports.createOne=(Model)=>catchAsync(
      createToken(createdInstance,res);
   }
    
+  else{
+         res.status(200).json({
+       status:"success",
+       data:createdInstance,
+      
+     })
+     }
   
     
 }
