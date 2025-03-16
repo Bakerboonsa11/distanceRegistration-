@@ -23,6 +23,26 @@ const courseSchema = new Schema({
     required: [true, "Price is required"],
     min: [0, "Price must be a positive number"] // Ensures no negative prices
   },
+  courseDetails: [
+    {
+      department: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Dep",
+        required: true
+      },
+      semester: {
+        type: Number,
+        required: true,
+        min: [1, "Semester must be at least 1"],
+        max: [8, "Semester cannot exceed 8"] // Adjust based on the number of semesters in your system
+      },
+      year: {
+        type: Number,
+        required: true,
+        min: [2000, "Year must be a valid year"] // Ensure valid year range
+      }
+    }
+  ],
   createdAt: {
     type: Date,
     default: Date.now
